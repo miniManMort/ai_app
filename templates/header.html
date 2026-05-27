@@ -1,0 +1,14 @@
+<header>
+  <div>
+    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path fill='%232d6a35' d='M32 4c-1 10-14 14-14 30 0 12 8 22 14 26 6-4 14-14 14-26 0-16-13-20-14-30z'/><path fill='%2368a85a' d='M32 4c-1 12-8 13-10 24 6-2 12-2 18 0 0-11-8-12-8-24z'/></svg>" alt="Figleaf logo" />
+    <div>
+      <strong>My Site</strong>
+    </div>
+  </div>
+  <div class="header-actions">
+    <div class="user-info">Signed in as {{ username }}</div>
+    <nav>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </div>
+</header>

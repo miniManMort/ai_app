@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #222;
+  background: #fff;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #f5f5f5;
+}
+
+header div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+header img {
+  display: block;
+  border-radius: 8px;
+  height: 45px;
+  width: auto;
+}
+
+header strong {
+  display: block;
+  font-size: 1.1rem;
+}
+
+header .user-info {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+header nav a {
+  color: #d00;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+main {
+  padding: 1.5rem;
+}
+
+.homepage-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.85rem 1.2rem;
+  background: #2d6a35;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.task-panel {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+}
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.task-list li + li {
+  margin-top: 0.75rem;
+}
+
+.task-link {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  background: #fafafa;
+  color: #222;
+  text-decoration: none;
+  border: 1px solid #e6e6e6;
+}
+
+.task-link:hover {
+  background: #f0fff0;
+  border-color: #cde7d1;
+}
+
+.task-summary {
+  font-weight: 600;
+}
+
+.task-due {
+  color: #555;
+  white-space: nowrap;
+}

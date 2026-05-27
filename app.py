@@ -1,13 +1,39 @@
-from flask import Flask, render_template, request
+from functools import wraps
+from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import check_password_hash
 import models
+from tasks import tasks_bp
 
 app = Flask(__name__)
+app.secret_key = "replace-this-with-a-secure-random-value"
+
+app.register_blueprint(tasks_bp)
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("username"):
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 @app.route("/")
+@login_required
 def index():
-    return render_template("index.html")
+    tasks = list(models.Task.select().order_by(models.Task.due_date).limit(5))
+    return render_template(
+        "index.html",
+        username=session.get("username"),
+        tasks=tasks,
+    )
+
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    return redirect(url_for("login"))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -18,7 +44,8 @@ def login():
         password = request.form.get("password", "")
         user = models.get_user(username)
         if user and check_password_hash(user.password_hash, password):
-            return render_template("welcome.html", username=username)
+            session["username"] = username
+            return redirect(url_for("index"))
         error = "Invalid username or password"
     return render_template("login.html", error=error)
 

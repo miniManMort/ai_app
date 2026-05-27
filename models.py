@@ -1,7 +1,7 @@
-from peewee import SqliteDatabase, Model, CharField
+from peewee import SqliteDatabase, Model, CharField, TextField, DateField, AutoField
 from werkzeug.security import generate_password_hash
 
-db = SqliteDatabase('users.db')
+db = SqliteDatabase('api_app.db')
 
 
 class BaseModel(Model):
@@ -14,9 +14,16 @@ class User(BaseModel):
     password_hash = CharField()
 
 
+class Task(BaseModel):
+    id = AutoField()
+    summary = CharField()
+    full_description = TextField()
+    due_date = DateField()
+
+
 def init_db(seed=True):
     db.connect(reuse_if_open=True)
-    db.create_tables([User])
+    db.create_tables([User, Task])
     if seed and User.select().count() == 0:
         User.create(username='alice', password_hash=generate_password_hash('password1'))
         User.create(username='bob', password_hash=generate_password_hash('password2'))

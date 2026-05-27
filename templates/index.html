@@ -4,11 +4,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Hello</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
+    {% include 'header.html' %}
     <main>
-      <h1>Hello, World!</h1>
-      <p>This is a minimal Flask application.</p>
+      <section class="homepage-hero">
+        <div>
+          <h1>Welcome back, {{ username }}!</h1>
+          <p>This is a minimal Flask application.</p>
+        </div>
+        <a class="button" href="{{ url_for('tasks.create_task') }}">Add a Task</a>
+      </section>
+
+      <section class="task-panel">
+        <h2>Recent Tasks</h2>
+        {% if tasks %}
+          <ul class="task-list">
+            {% for task in tasks %}
+              <li>
+                <a class="task-link" href="{{ url_for('tasks.edit_task', task_id=task.id) }}">
+                  <span class="task-summary">{{ task.summary }}</span>
+                  <span class="task-due">Due {{ task.due_date }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No tasks yet. Add one to get started.</p>
+        {% endif %}
+      </section>
     </main>
   </body>
 </html>
