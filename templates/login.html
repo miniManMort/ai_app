@@ -4,21 +4,31 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
-    <main>
-      <h1>Login</h1>
-      <form method="post" action="/login">
+    <main class="login-page">
+      <section class="auth-card">
+        <div class="auth-card-header">
+          <h1>Sign in</h1>
+          <p>Access your tasks and manage your to-do list.</p>
+        </div>
+
         {% if error %}
-        <p style="color:red">{{ error }}</p>
+          <p class="error-message">{{ error }}</p>
         {% endif %}
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text" required />
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required />
-        <button type="submit">Log in</button>
-      </form>
-      <p><a href="/">Home</a></p>
+
+        <form method="post" action="/login" class="auth-form">
+          <label for="username">Username</label>
+          <input class="form-input" id="username" name="username" type="text" required />
+
+          <label for="password">Password</label>
+          <input class="form-input" id="password" name="password" type="password" required />
+
+          <button class="button form-button" type="submit">Log in</button>
+        </form>
+        <p class="form-footer"><a href="/">Back to home</a></p>
+      </section>
     </main>
   </body>
 </html>

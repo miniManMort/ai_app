@@ -14,10 +14,10 @@
           <h1>Welcome back, {{ username }}!</h1>
           <p>This is a minimal Flask application.</p>
         </div>
-        <a class="button" href="{{ url_for('tasks.create_task') }}">Add a Task</a>
       </section>
 
       <section class="task-panel">
+        <a class="button" href="{{ url_for('tasks.create_task') }}">Add a Task</a>
         <h2>Recent Tasks</h2>
         {% if tasks %}
           <ul class="task-list">
