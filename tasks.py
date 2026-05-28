@@ -19,22 +19,42 @@ def login_required(f):
 @login_required
 def create_task():
     error = None
+    users = list(models.User.select().order_by(models.User.username))
+    status_value = models.Task.STATUS_NEW
     if request.method == "POST":
         summary = request.form.get("summary", "").strip()
         full_description = request.form.get("full_description", "").strip()
         due_date_str = request.form.get("due_date", "").strip()
+        status_value = request.form.get("status", models.Task.STATUS_NEW).strip()
+        assigned_to_id = request.form.get("assigned_to", "").strip()
 
-        if not summary or not full_description or not due_date_str:
+        if not summary or not full_description or not due_date_str or not status_value:
             error = "All fields are required."
+        elif status_value not in models.Task.STATUS_CHOICES:
+            error = "Invalid status selected."
         else:
             try:
                 due_date = datetime.strptime(due_date_str, "%Y-%m-%d").date()
-                models.Task.create(
-                    summary=summary,
-                    full_description=full_description,
-                    due_date=due_date,
-                )
-                return redirect(url_for("index"))
+                current_user = models.get_user(session["username"])
+                if current_user is None:
+                    abort(400)
+
+                assigned_to = None
+                if assigned_to_id:
+                    assigned_to = models.User.get_or_none(models.User.id == int(assigned_to_id))
+                    if assigned_to is None:
+                        error = "Selected assignee does not exist."
+
+                if not error:
+                    models.Task.create(
+                        summary=summary,
+                        full_description=full_description,
+                        due_date=due_date,
+                        status=status_value,
+                        created_by=current_user,
+                        assigned_to=assigned_to,
+                    )
+                    return redirect(url_for("index"))
             except ValueError:
                 error = "Due date must be in YYYY-MM-DD format."
 
@@ -42,6 +62,9 @@ def create_task():
         "tasks/create.html",
         error=error,
         username=session.get("username"),
+        users=users,
+        statuses=models.Task.STATUS_CHOICES,
+        status_value=status_value,
     )
 
 
@@ -52,21 +75,37 @@ def edit_task(task_id):
     if task is None:
         abort(404)
 
+    users = list(models.User.select().order_by(models.User.username))
     error = None
+    status_value = task.status
     if request.method == "POST":
         summary = request.form.get("summary", "").strip()
         full_description = request.form.get("full_description", "").strip()
         due_date_str = request.form.get("due_date", "").strip()
+        status_value = request.form.get("status", task.status).strip()
+        assigned_to_id = request.form.get("assigned_to", "").strip()
 
-        if not summary or not full_description or not due_date_str:
+        if not summary or not full_description or not due_date_str or not status_value:
             error = "All fields are required."
+        elif status_value not in models.Task.STATUS_CHOICES:
+            error = "Invalid status selected."
         else:
             try:
                 task.summary = summary
                 task.full_description = full_description
                 task.due_date = datetime.strptime(due_date_str, "%Y-%m-%d").date()
-                task.save()
-                return redirect(url_for("index"))
+
+                assigned_to = None
+                if assigned_to_id:
+                    assigned_to = models.User.get_or_none(models.User.id == int(assigned_to_id))
+                    if assigned_to is None:
+                        error = "Selected assignee does not exist."
+
+                if not error:
+                    task.assigned_to = assigned_to
+                    task.status = status_value
+                    task.save()
+                    return redirect(url_for("index"))
             except ValueError:
                 error = "Due date must be in YYYY-MM-DD format."
 
@@ -75,4 +114,7 @@ def edit_task(task_id):
         task=task,
         error=error,
         username=session.get("username"),
+        users=users,
+        statuses=models.Task.STATUS_CHOICES,
+        status_value=status_value,
     )

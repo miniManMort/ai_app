@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Job Summary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    {% include 'header.html' %}
+    <main class="page-center">
+      <section class="page-card">
+        <div class="page-card-header">
+          <h1>Job Summary</h1>
+          <p>Review the details for this job.</p>
+        </div>
+
+        <div class="task-summary-card">
+          <h2>{{ job.job_name }}</h2>
+          <p><strong>Short code:</strong> {{ job.short_code }}</p>
+          <p><strong>Owner:</strong> {{ job.owner.username }}</p>
+          <div>
+            <strong>Full description</strong>
+            <p>{{ job.full_description }}</p>
+          </div>
+        </div>
+
+        <p class="form-footer">
+          <a class="button" href="{{ url_for('jobs.edit_job', job_id=job.id) }}">Edit Job</a>
+          <a href="{{ url_for('index') }}">Back to home</a>
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

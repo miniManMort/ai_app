@@ -29,6 +29,24 @@
           <label for="due_date">Due Date</label>
           <input class="form-input" type="date" id="due_date" name="due_date" autocomplete="off" required>
 
+          <label for="status">Status</label>
+          <select class="form-input" id="status" name="status" required>
+            {% for status in statuses %}
+              <option value="{{ status }}" {% if status == status_value %}selected{% endif %}>{{ status }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="created_by">Created By</label>
+          <input class="form-input" type="text" id="created_by" name="created_by" value="{{ username }}" disabled>
+
+          <label for="assigned_to">Assign To</label>
+          <select class="form-input" id="assigned_to" name="assigned_to">
+            <option value="">Unassigned</option>
+            {% for user in users %}
+              <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+          </select>
+
           <button class="button form-button" type="submit">Create Task</button>
         </form>
         <p class="form-footer"><a href="{{ url_for('index') }}">Back to home</a></p>

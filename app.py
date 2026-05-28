@@ -1,13 +1,16 @@
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import check_password_hash
+from peewee import JOIN
 import models
 from tasks import tasks_bp
+from jobs import jobs_bp
 
 app = Flask(__name__)
 app.secret_key = "replace-this-with-a-secure-random-value"
 
 app.register_blueprint(tasks_bp)
+app.register_blueprint(jobs_bp)
 
 
 def login_required(f):
@@ -22,11 +25,27 @@ def login_required(f):
 @app.route("/")
 @login_required
 def index():
-    tasks = list(models.Task.select().order_by(models.Task.due_date).limit(5))
+    creator = models.User.alias()
+    assignee = models.User.alias()
+    tasks = list(
+        models.Task.select(models.Task, creator, assignee)
+        .join(creator, on=(models.Task.created_by == creator.id))
+        .switch(models.Task)
+        .join(assignee, JOIN.LEFT_OUTER, on=(models.Task.assigned_to == assignee.id))
+        .order_by(models.Task.due_date)
+        .limit(5)
+    )
+    jobs = list(
+        models.Job.select(models.Job, models.User)
+        .join(models.User, on=(models.Job.owner == models.User.id))
+        .order_by(models.Job.job_name)
+        .limit(5)
+    )
     return render_template(
         "index.html",
         username=session.get("username"),
         tasks=tasks,
+        jobs=jobs,
     )
 
 

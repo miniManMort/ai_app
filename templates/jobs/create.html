@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Create Job</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    {% include 'header.html' %}
+    <main class="page-center">
+      <section class="page-card">
+        <div class="page-card-header">
+          <h1>Create Job</h1>
+          <p>Enter details for the new job and save it.</p>
+        </div>
+
+        {% if error %}
+          <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <form method="post" class="task-form">
+          <label for="job_name">Job Name</label>
+          <input class="form-input" type="text" id="job_name" name="job_name" autocomplete="off" required>
+
+          <label for="short_code">Short Code</label>
+          <input class="form-input" type="text" id="short_code" name="short_code" autocomplete="off" required>
+
+          <label for="full_description">Full Description</label>
+          <textarea class="form-input" id="full_description" name="full_description" rows="5" autocomplete="off" required></textarea>
+
+          <label for="owner">Owner</label>
+          <select class="form-input" id="owner" name="owner" required>
+            <option value="">Select owner</option>
+            {% for user in users %}
+              <option value="{{ user.id }}" {% if owner_id and owner_id|int == user.id %}selected{% endif %}>{{ user.username }}</option>
+            {% endfor %}
+          </select>
+
+          <button class="button form-button" type="submit">Create Job</button>
+        </form>
+        <p class="form-footer"><a href="{{ url_for('index') }}">Back to home</a></p>
+      </section>
+    </main>
+  </body>
+</html>
