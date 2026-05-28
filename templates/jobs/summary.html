@@ -16,7 +16,10 @@
         </div>
 
         <div class="task-summary-card">
-          <h2>{{ job.job_name }}</h2>
+          <div class="task-summary-header">
+            <h2>{{ job.job_name }}</h2>
+            <a href="{{ url_for('jobs.edit_job', job_id=job.id) }}">✏️ Edit Job</a>
+          </div>
           <p><strong>Short code:</strong> {{ job.short_code }}</p>
           <p><strong>Owner:</strong> {{ job.owner.username }}</p>
           <div>
@@ -26,7 +29,6 @@
         </div>
 
         <p class="form-footer">
-          <a class="button" href="{{ url_for('jobs.edit_job', job_id=job.id) }}">Edit Job</a>
           <a href="{{ url_for('index') }}">Back to home</a>
         </p>
       </section>

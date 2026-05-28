@@ -35,17 +35,20 @@ class Task(BaseModel):
     status = CharField(default=STATUS_NEW)
     created_by = ForeignKeyField(User, backref='created_tasks')
     assigned_to = ForeignKeyField(User, null=True, backref='assigned_tasks')
+    job_id = ForeignKeyField(Job, null=True, backref='tasks')
 
 
 def init_db(seed=True):
     db.connect(reuse_if_open=True)
     db.create_tables([User, Job, Task])
 
-    # If the database already exists without the status column, add it.
+    # If the database already exists without the status or job_id columns, add them.
     if db.table_exists('task'):
         existing_columns = [row[1] for row in db.execute_sql("PRAGMA table_info('task')").fetchall()]
         if 'status' not in existing_columns:
             db.execute_sql("ALTER TABLE task ADD COLUMN status TEXT DEFAULT 'New'")
+        if 'job_id' not in existing_columns:
+            db.execute_sql("ALTER TABLE task ADD COLUMN job_id INTEGER")
 
     if seed and User.select().count() == 0:
         User.create(username='alice', password_hash=generate_password_hash('password1'))

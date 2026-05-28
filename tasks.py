@@ -20,13 +20,16 @@ def login_required(f):
 def create_task():
     error = None
     users = list(models.User.select().order_by(models.User.username))
+    jobs = list(models.Job.select().order_by(models.Job.job_name))
     status_value = models.Task.STATUS_NEW
+    job_id = ""
     if request.method == "POST":
         summary = request.form.get("summary", "").strip()
         full_description = request.form.get("full_description", "").strip()
         due_date_str = request.form.get("due_date", "").strip()
         status_value = request.form.get("status", models.Task.STATUS_NEW).strip()
         assigned_to_id = request.form.get("assigned_to", "").strip()
+        job_id = request.form.get("job_id", "").strip()
 
         if not summary or not full_description or not due_date_str or not status_value:
             error = "All fields are required."
@@ -45,6 +48,12 @@ def create_task():
                     if assigned_to is None:
                         error = "Selected assignee does not exist."
 
+                job = None
+                if job_id:
+                    job = models.Job.get_or_none(models.Job.id == int(job_id))
+                    if job is None:
+                        error = "Selected job does not exist."
+
                 if not error:
                     models.Task.create(
                         summary=summary,
@@ -53,6 +62,7 @@ def create_task():
                         status=status_value,
                         created_by=current_user,
                         assigned_to=assigned_to,
+                        job_id=job,
                     )
                     return redirect(url_for("index"))
             except ValueError:
@@ -63,8 +73,10 @@ def create_task():
         error=error,
         username=session.get("username"),
         users=users,
+        jobs=jobs,
         statuses=models.Task.STATUS_CHOICES,
         status_value=status_value,
+        job_id=job_id,
     )
 
 
@@ -76,14 +88,17 @@ def edit_task(task_id):
         abort(404)
 
     users = list(models.User.select().order_by(models.User.username))
+    jobs = list(models.Job.select().order_by(models.Job.job_name))
     error = None
     status_value = task.status
+    job_id = str(task.job_id.id) if task.job_id else ""
     if request.method == "POST":
         summary = request.form.get("summary", "").strip()
         full_description = request.form.get("full_description", "").strip()
         due_date_str = request.form.get("due_date", "").strip()
         status_value = request.form.get("status", task.status).strip()
         assigned_to_id = request.form.get("assigned_to", "").strip()
+        job_id = request.form.get("job_id", job_id).strip()
 
         if not summary or not full_description or not due_date_str or not status_value:
             error = "All fields are required."
@@ -101,9 +116,16 @@ def edit_task(task_id):
                     if assigned_to is None:
                         error = "Selected assignee does not exist."
 
+                job = None
+                if job_id:
+                    job = models.Job.get_or_none(models.Job.id == int(job_id))
+                    if job is None:
+                        error = "Selected job does not exist."
+
                 if not error:
                     task.assigned_to = assigned_to
                     task.status = status_value
+                    task.job_id = job
                     task.save()
                     return redirect(url_for("index"))
             except ValueError:
@@ -115,6 +137,8 @@ def edit_task(task_id):
         error=error,
         username=session.get("username"),
         users=users,
+        jobs=jobs,
         statuses=models.Task.STATUS_CHOICES,
         status_value=status_value,
+        job_id=job_id,
     )

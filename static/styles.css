@@ -87,6 +87,25 @@ main {
   font-weight: 600;
 }
 
+.task-summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.task-summary-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.task-summary-header a {
+  color: #2d6a35;
+  text-decoration: none;
+  font-weight: 600;
+}
+
 .form-button {
   width: 100%;
 }

@@ -23,6 +23,14 @@
           <label for="summary">Summary</label>
           <input class="form-input" type="text" id="summary" name="summary" value="{{ task.summary }}" autocomplete="off" required>
 
+          <label for="job_id">Job</label>
+          <select class="form-input" id="job_id" name="job_id">
+            <option value="">No job</option>
+            {% for job in jobs %}
+              <option value="{{ job.id }}" {% if job_id and job_id|int == job.id %}selected{% endif %}>{{ job.job_name }}</option>
+            {% endfor %}
+          </select>
+
           <label for="full_description">Full Description</label>
           <textarea class="form-input" id="full_description" name="full_description" rows="5" autocomplete="off" required>{{ task.full_description }}</textarea>
 
@@ -44,6 +52,14 @@
             <option value="" {% if not task.assigned_to %}selected{% endif %}>Unassigned</option>
             {% for user in users %}
               <option value="{{ user.id }}" {% if task.assigned_to and task.assigned_to.id == user.id %}selected{% endif %}>{{ user.username }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="job_id">Job</label>
+          <select class="form-input" id="job_id" name="job_id">
+            <option value="">No job</option>
+            {% for job in jobs %}
+              <option value="{{ job.id }}" {% if job_id and job_id|int == job.id %}selected{% endif %}>{{ job.job_name }}</option>
             {% endfor %}
           </select>
 
