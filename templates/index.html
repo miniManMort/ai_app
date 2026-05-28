@@ -17,28 +17,6 @@
       </section>
 
       <section class="task-panel">
-        <a class="button" href="{{ url_for('tasks.create_task') }}">Add a Task</a>
-        <a class="button" href="{{ url_for('jobs.create_job') }}">Create Job</a>
-        <h2>Recent Tasks</h2>
-        {% if tasks %}
-          <ul class="task-list">
-            {% for task in tasks %}
-              <li>
-                <a class="task-link" href="{{ url_for('tasks.edit_task', task_id=task.id) }}">
-                  <span class="task-summary">{{ task.summary }}</span>
-                  <span class="task-meta">
-                    Status: {{ task.status }} | Due {{ task.due_date }} | Created by: {{ task.created_by.username }} | Assigned to: {{ task.assigned_to.username if task.assigned_to else 'Unassigned' }}
-                  </span>
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p>No tasks yet. Add one to get started.</p>
-        {% endif %}
-      </section>
-
-      <section class="task-panel">
         <a class="button" href="{{ url_for('jobs.create_job') }}">Create Job</a>
         <h2>Recent Jobs</h2>
         {% if jobs %}
@@ -58,6 +36,28 @@
           <p>No jobs yet. Create one to get started.</p>
         {% endif %}
       </section>
+
+      <section class="task-panel">
+        <a class="button" href="{{ url_for('tasks.create_task') }}">Create Task</a>
+        <h2>Recent Tasks</h2>
+        {% if tasks %}
+          <ul class="task-list">
+            {% for task in tasks %}
+              <li>
+                <a class="task-link" href="{{ url_for('tasks.edit_task', task_id=task.id) }}">
+                  <span class="task-summary">{{ task.summary }}</span>
+                  <span class="task-meta">
+                    Status: {{ task.status }} | Due {{ task.due_date }} | Created by: {{ task.created_by.username }} | Assigned to: {{ task.assigned_to.username if task.assigned_to else 'Unassigned' }}
+                  </span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No tasks yet. Add one to get started.</p>
+        {% endif %}
+      </section>
+
     </main>
   </body>
 </html>

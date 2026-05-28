@@ -55,14 +55,7 @@
             {% endfor %}
           </select>
 
-          <label for="job_id">Job</label>
-          <select class="form-input" id="job_id" name="job_id">
-            <option value="">No job</option>
-            {% for job in jobs %}
-              <option value="{{ job.id }}" {% if job_id and job_id|int == job.id %}selected{% endif %}>{{ job.job_name }}</option>
-            {% endfor %}
-          </select>
-
+          
           <button class="button form-button" type="submit">Create Task</button>
         </form>
         <p class="form-footer"><a href="{{ url_for('index') }}">Back to home</a></p>
