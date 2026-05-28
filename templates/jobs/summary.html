@@ -18,7 +18,7 @@
         <div class="task-summary-card">
           <div class="task-summary-header">
             <h2>{{ job.job_name }}</h2>
-            <a href="{{ url_for('jobs.edit_job', job_id=job.id) }}">✏️ Edit Job</a>
+            <a href="{{ url_for('jobs.edit_job', job_id=job.id, return_url=url_for('jobs.job_summary', job_id=job.id)) }}">✏️ Edit Job</a>
           </div>
           <p><strong>Short code:</strong> {{ job.short_code }}</p>
           <p><strong>Owner:</strong> {{ job.owner.username }}</p>
@@ -27,6 +27,29 @@
             <p>{{ job.full_description }}</p>
           </div>
         </div>
+
+        <section class="task-panel">
+          <div class="task-summary-header">
+            <h2>Tasks for this Job</h2>
+            <a class="button" href="{{ url_for('tasks.create_task', job_id=job.id) }}">Create Task</a>
+          </div>
+          {% if job.tasks.count() %}
+            <ul class="task-list">
+              {% for task in job.tasks %}
+                <li>
+                  <a class="task-link" href="{{ url_for('tasks.edit_task', task_id=task.id) }}">
+                    <span class="task-summary">{{ task.summary }}</span>
+                    <span class="task-meta">
+                      Due {{ task.due_date }} | Status: {{ task.status }} | Assigned to: {{ task.assigned_to.username if task.assigned_to else 'Unassigned' }} | Job: {{ task.job_id.job_name if task.job_id else 'No job' }}
+                    </span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No tasks are linked to this job yet.</p>
+          {% endif %}
+        </section>
 
         <p class="form-footer">
           <a href="{{ url_for('index') }}">Back to home</a>

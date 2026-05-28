@@ -22,7 +22,7 @@ def create_task():
     users = list(models.User.select().order_by(models.User.username))
     jobs = list(models.Job.select().order_by(models.Job.job_name))
     status_value = models.Task.STATUS_NEW
-    job_id = ""
+    job_id = request.args.get("job_id", "")
     if request.method == "POST":
         summary = request.form.get("summary", "").strip()
         full_description = request.form.get("full_description", "").strip()

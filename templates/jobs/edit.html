@@ -20,6 +20,7 @@
         {% endif %}
 
         <form method="post" class="task-form">
+          <input type="hidden" name="return_url" value="{{ return_url }}">
           <label for="job_name">Job Name</label>
           <input class="form-input" type="text" id="job_name" name="job_name" value="{{ job.job_name }}" autocomplete="off" required>
 
@@ -39,7 +40,13 @@
 
           <button class="button form-button" type="submit">Update Job</button>
         </form>
-        <p class="form-footer"><a href="{{ url_for('jobs.job_summary', job_id=job.id) }}">Back to job</a> · <a href="{{ url_for('index') }}">Home</a></p>
+        <p class="form-footer">
+          {% if return_url %}
+            <a href="{{ return_url }}">Back to job</a>
+          {% else %}
+            <a href="{{ url_for('index') }}">Back to home</a>
+          {% endif %}
+        </p>
       </section>
     </main>
   </body>

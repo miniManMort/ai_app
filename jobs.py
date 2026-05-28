@@ -21,12 +21,14 @@ def create_job():
     users = list(models.User.select().order_by(models.User.username))
     current_user = models.get_user(session["username"])
     owner_id = str(current_user.id) if current_user else ""
+    return_url = request.args.get("return_url", "")
 
     if request.method == "POST":
         job_name = request.form.get("job_name", "").strip()
         short_code = request.form.get("short_code", "").strip()
         full_description = request.form.get("full_description", "").strip()
         owner_id = request.form.get("owner", "").strip()
+        return_url = request.form.get("return_url", "").strip()
 
         if not job_name or not short_code or not full_description or not owner_id:
             error = "All fields are required."
@@ -50,6 +52,7 @@ def create_job():
         username=session.get("username"),
         users=users,
         owner_id=owner_id,
+        return_url=return_url,
     )
 
 
@@ -63,12 +66,14 @@ def edit_job(job_id):
     users = list(models.User.select().order_by(models.User.username))
     error = None
     owner_id = str(job.owner.id) if job.owner else ""
+    return_url = request.args.get("return_url", "")
 
     if request.method == "POST":
         job_name = request.form.get("job_name", "").strip()
         short_code = request.form.get("short_code", "").strip()
         full_description = request.form.get("full_description", "").strip()
         owner_id = request.form.get("owner", "").strip()
+        return_url = request.form.get("return_url", "").strip()
 
         if not job_name or not short_code or not full_description or not owner_id:
             error = "All fields are required."
@@ -92,6 +97,7 @@ def edit_job(job_id):
         username=session.get("username"),
         users=users,
         owner_id=owner_id,
+        return_url=return_url,
     )
 
 
