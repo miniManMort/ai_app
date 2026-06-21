@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Create Job</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="/static/rte.css">
+    <script src="/static/rte.js"></script>
   </head>
   <body>
     {% include 'header.html' %}
@@ -28,7 +30,7 @@
           <input class="form-input" type="text" id="short_code" name="short_code" autocomplete="off" required>
 
           <label for="full_description">Full Description</label>
-          <textarea class="form-input" id="full_description" name="full_description" rows="5" autocomplete="off" required></textarea>
+          <textarea class="rte" id="full_description" name="full_description" rows="5" autocomplete="off" required></textarea>
 
           <label for="owner">Owner</label>
           <select class="form-input" id="owner" name="owner" required>

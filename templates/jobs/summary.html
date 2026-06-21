@@ -24,7 +24,7 @@
           <p><strong>Owner:</strong> {{ job.owner.username }}</p>
           <div>
             <strong>Full description</strong>
-            <p>{{ job.full_description }}</p>
+            <p>{{ job.full_description|safe }}</p>
           </div>
         </div>
 

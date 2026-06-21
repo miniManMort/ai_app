@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Create Task</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="/static/rte.css">
+    <script src="/static/rte.js"></script>
   </head>
   <body>
     {% include 'header.html' %}
@@ -32,7 +34,7 @@
           </select>
 
           <label for="full_description">Full Description</label>
-          <textarea class="form-input" id="full_description" name="full_description" rows="5" autocomplete="off" required></textarea>
+          <textarea class="rte" id="full_description" name="full_description" rows="5" autocomplete="off" required></textarea>
 
           <label for="due_date">Due Date</label>
           <input class="form-input" type="date" id="due_date" name="due_date" autocomplete="off" required>
