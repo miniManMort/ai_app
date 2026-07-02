@@ -25,3 +25,7 @@ Initialize the SQLite database (creates `users.db` with sample users `alice`/`pa
 ```bash
 python init_db.py
 ```
+
+# Capability
+
+Some detains on what it does here.
