@@ -28,4 +28,4 @@ python init_db.py
 
 # Capability
 
-Some detains on what it does here.
+Some details on what it does here.
